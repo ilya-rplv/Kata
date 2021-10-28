@@ -18,40 +18,59 @@ class GildedRose {
     }
 
     private void update(Item item) {
-        if (!item.name.equals(AGED_BRIE) && !item.name.equals(BACKSTAGE_PASSES) && !item.name.equals(SULFURAS)) {
+        if (nameIs(item, AGED_BRIE))
+            updateAgedBree(item);
+        else if (nameIs(item, BACKSTAGE_PASSES))
+            updateBackstagePasses(item);
+        else if (nameIs(item, SULFURAS))
+            updateSulfuras(item);
+        else
+            updateOtherItem(item);
+
+        decrementDaysLeftToSell(item);
+    }
+
+    private void updateOtherItem(Item item) {
+        decrementQuality(item);
+        if (item.sellIn < 0) {
             decrementQuality(item);
-            if (item.sellIn < 0) {
-                decrementQuality(item);
-            }
         }
+    }
 
-        if (item.name.equals(AGED_BRIE)){
+    private void updateSulfuras(Item item) {
+        incrementDaysLeftToSell(item);
+    }
+
+    private void updateBackstagePasses(Item item) {
+        incrementQuality(item);
+        if (item.sellIn < 11) {
             incrementQuality(item);
-            if (item.sellIn < 0) {
-                incrementQuality(item);
-            }
         }
-
-        if (item.name.equals(BACKSTAGE_PASSES)) {
+        if (item.sellIn < 6) {
             incrementQuality(item);
-            if (item.sellIn < 11) {
-                incrementQuality(item);
-            }
-            if (item.sellIn < 6) {
-                incrementQuality(item);
-            }
-            if (item.sellIn < 0) {
-                dropQuality(item);
-            }
         }
+        if (item.sellIn < 0) {
+            dropQuality(item);
+        }
+    }
 
-        if (!item.name.equals(SULFURAS)) {
-            decrementDaysLeftToSell(item);
+    private void updateAgedBree(Item item) {
+        incrementQuality(item);
+        if (item.sellIn < 0) {
+            incrementQuality(item);
         }
+    }
+
+    private boolean nameIs(Item item, String name) {
+        return item.name.equals(name);
     }
 
     private void decrementDaysLeftToSell(Item item) {
         item.sellIn = item.sellIn - 1;
+    }
+
+    private void incrementDaysLeftToSell(Item item) {
+        item.sellIn = item.sellIn + 1;
     }
 
     private void incrementQuality(Item item) {
