@@ -1,5 +1,7 @@
 package io.gong.kata.gildedrose;
 
+import java.util.Arrays;
+
 class GildedRose {
     private static final String AGED_BRIE = "Aged Brie";
     private static final String BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert";
@@ -12,41 +14,43 @@ class GildedRose {
     }
 
     public void updateQuality() {
-        for (Item item : items) {
-            if (!item.name.equals(AGED_BRIE)
-                    && !item.name.equals(BACKSTAGE_PASSES)) {
-                if (!item.name.equals(SULFURAS)) {
-                    decrementQuality(item);
+        Arrays.stream(items).forEach(this::update);
+    }
+
+    private void update(Item item) {
+        if (!item.name.equals(AGED_BRIE)
+                && !item.name.equals(BACKSTAGE_PASSES)) {
+            if (!item.name.equals(SULFURAS)) {
+                decrementQuality(item);
+            }
+        } else {
+            incrementQuality(item);
+            if (item.name.equals(BACKSTAGE_PASSES)) {
+                if (item.sellIn < 11) {
+                    incrementQuality(item);
+                }
+
+                if (item.sellIn < 6) {
+                    incrementQuality(item);
+                }
+            }
+        }
+
+        if (!item.name.equals(SULFURAS)) {
+            decrementDaysLeftToSell(item);
+        }
+
+        if (item.sellIn < 0) {
+            if (!item.name.equals(AGED_BRIE)) {
+                if (!item.name.equals(BACKSTAGE_PASSES)) {
+                    if (!item.name.equals(SULFURAS)) {
+                        decrementQuality(item);
+                    }
+                } else {
+                    dropQuality(item);
                 }
             } else {
                 incrementQuality(item);
-                if (item.name.equals(BACKSTAGE_PASSES)) {
-                    if (item.sellIn < 11) {
-                        incrementQuality(item);
-                    }
-
-                    if (item.sellIn < 6) {
-                        incrementQuality(item);
-                    }
-                }
-            }
-
-            if (!item.name.equals(SULFURAS)) {
-                decrementDaysLeftToSell(item);
-            }
-
-            if (item.sellIn < 0) {
-                if (!item.name.equals(AGED_BRIE)) {
-                    if (!item.name.equals(BACKSTAGE_PASSES)) {
-                        if (!item.name.equals(SULFURAS)) {
-                            decrementQuality(item);
-                        }
-                    } else {
-                        dropQuality(item);
-                    }
-                } else {
-                    incrementQuality(item);
-                }
             }
         }
     }
