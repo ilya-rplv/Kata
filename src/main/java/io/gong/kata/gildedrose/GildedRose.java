@@ -18,44 +18,35 @@ class GildedRose {
     }
 
     private void update(Item item) {
-        if (!item.name.equals(AGED_BRIE)
-                && !item.name.equals(BACKSTAGE_PASSES)) {
-            if (!item.name.equals(SULFURAS)) {
+        if (!item.name.equals(AGED_BRIE) && !item.name.equals(BACKSTAGE_PASSES) && !item.name.equals(SULFURAS)) {
+            decrementQuality(item);
+            if (item.sellIn < 0) {
                 decrementQuality(item);
             }
         }
 
-        if (item.name.equals(AGED_BRIE) || item.name.equals(BACKSTAGE_PASSES)){
+        if (item.name.equals(AGED_BRIE)){
             incrementQuality(item);
-            if (item.name.equals(BACKSTAGE_PASSES)) {
-                if (item.sellIn < 11) {
-                    incrementQuality(item);
-                }
+            if (item.sellIn < 0) {
+                incrementQuality(item);
+            }
+        }
 
-                if (item.sellIn < 6) {
-                    incrementQuality(item);
-                }
+        if (item.name.equals(BACKSTAGE_PASSES)) {
+            incrementQuality(item);
+            if (item.sellIn < 11) {
+                incrementQuality(item);
+            }
+            if (item.sellIn < 6) {
+                incrementQuality(item);
+            }
+            if (item.sellIn < 0) {
+                dropQuality(item);
             }
         }
 
         if (!item.name.equals(SULFURAS)) {
             decrementDaysLeftToSell(item);
-        }
-
-        if (item.sellIn < 0) {
-            if (!item.name.equals(AGED_BRIE)) {
-                if (!item.name.equals(BACKSTAGE_PASSES)) {
-                    if (!item.name.equals(SULFURAS)) {
-                        decrementQuality(item);
-                    }
-                }
-                if (item.name.equals(BACKSTAGE_PASSES)){
-                    dropQuality(item);
-                }
-            }
-            if (item.name.equals(AGED_BRIE)){
-                incrementQuality(item);
-            }
         }
     }
 
