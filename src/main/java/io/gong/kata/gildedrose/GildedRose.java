@@ -32,7 +32,7 @@ class GildedRose {
             }
 
             if (!item.name.equals(SULFURAS)) {
-                item.sellIn = item.sellIn - 1;
+                decrementDaysLeftToSell(item);
             }
 
             if (item.sellIn < 0) {
@@ -49,6 +49,10 @@ class GildedRose {
                 }
             }
         }
+    }
+
+    private void decrementDaysLeftToSell(Item item) {
+        item.sellIn = item.sellIn - 1;
     }
 
     private void incrementQuality(Item item) {
