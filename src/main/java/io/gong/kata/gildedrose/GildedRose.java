@@ -31,7 +31,6 @@ class GildedRose {
             default:
                 updateOtherItem(item);
         }
-        decrementDaysLeftToSell(item);
     }
 
     private void updateOtherItem(Item item) {
@@ -39,10 +38,11 @@ class GildedRose {
         if (item.sellIn < 0) {
             decrementQuality(item);
         }
+        decrementDaysLeftToSell(item);
     }
 
     private void updateSulfuras(Item item) {
-        incrementDaysLeftToSell(item);
+        // do nothing...
     }
 
     private void updateBackstagePasses(Item item) {
@@ -56,6 +56,7 @@ class GildedRose {
         if (item.sellIn < 0) {
             dropQuality(item);
         }
+        decrementDaysLeftToSell(item);
     }
 
     private void updateAgedBree(Item item) {
@@ -63,14 +64,11 @@ class GildedRose {
         if (item.sellIn < 0) {
             incrementQuality(item);
         }
+        decrementDaysLeftToSell(item);
     }
 
     private void decrementDaysLeftToSell(Item item) {
         item.sellIn = item.sellIn - 1;
-    }
-
-    private void incrementDaysLeftToSell(Item item) {
-        item.sellIn = item.sellIn + 1;
     }
 
     private void incrementQuality(Item item) {
