@@ -18,15 +18,19 @@ class GildedRose {
     }
 
     private void update(Item item) {
-        if (nameIs(item, AGED_BRIE))
-            updateAgedBree(item);
-        else if (nameIs(item, BACKSTAGE_PASSES))
-            updateBackstagePasses(item);
-        else if (nameIs(item, SULFURAS))
-            updateSulfuras(item);
-        else
-            updateOtherItem(item);
-
+        switch(item.name) {
+            case AGED_BRIE:
+                updateAgedBree(item);
+                break;
+            case BACKSTAGE_PASSES:
+                updateBackstagePasses(item);
+                break;
+            case SULFURAS:
+                updateSulfuras(item);
+                break;
+            default:
+                updateOtherItem(item);
+        }
         decrementDaysLeftToSell(item);
     }
 
@@ -59,10 +63,6 @@ class GildedRose {
         if (item.sellIn < 0) {
             incrementQuality(item);
         }
-    }
-
-    private boolean nameIs(Item item, String name) {
-        return item.name.equals(name);
     }
 
     private void decrementDaysLeftToSell(Item item) {
