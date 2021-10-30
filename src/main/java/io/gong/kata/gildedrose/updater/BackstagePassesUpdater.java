@@ -4,17 +4,15 @@ import io.gong.kata.gildedrose.Item;
 
 public class BackstagePassesUpdater extends ItemUpdater {
     @Override
-    public void update(Item item) {
-        incrementQuality(item);
-        if (item.sellIn < 11) {
-            incrementQuality(item);
-        }
-        if (item.sellIn < 6) {
-            incrementQuality(item);
-        }
-        if (item.sellIn < 0) {
-            dropQuality(item);
-        }
+    public void updateQualityOf(Item item) {
+        if (noDaysLeftToSell(item)) dropQuality(item);
+        else if (daysLeftToSell(item, 6)) raiseQualityOf(item, 3);
+        else if (daysLeftToSell(item, 11)) raiseQualityOf(item, 2);
+        else raiseQualityOf(item, 1);
+    }
+
+    @Override
+    protected void updateDaysLeftToSell(Item item) {
         decrementDaysLeftToSell(item);
     }
 }
